@@ -5,6 +5,7 @@ import argparse
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import pandas as pd
 from pydriller import Repository
 
 
@@ -29,9 +30,14 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     since = datetime.now(timezone.utc) - timedelta(days=args.days)
+    rows: list[dict[str, str]] = []
 
     for commit in Repository(str(args.repo), since=since).traverse_commits():
-        print(commit.hash)
+        rows.append({"hash": commit.hash[:7]})
+
+    if rows:
+        table = pd.DataFrame(rows, columns=["hash"])
+        print(table.to_string(index=False))
 
 
 if __name__ == "__main__":

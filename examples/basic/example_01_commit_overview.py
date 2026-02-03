@@ -4,6 +4,7 @@
 import argparse
 from pathlib import Path
 
+import pandas as pd
 from pydriller import Repository
 
 
@@ -28,14 +29,24 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     count = 0
+    rows: list[dict[str, str]] = []
 
     for commit in Repository(str(args.repo)).traverse_commits():
-        print(f"{commit.hash} | {commit.author.name} <{commit.author.email}>")
-        print(f"    {commit.msg.strip()}")
+        rows.append(
+            {
+                "hash": commit.hash[:7],
+                "author": f"{commit.author.name} <{commit.author.email}>",
+                "message": commit.msg.strip(),
+            }
+        )
         count += 1
 
         if args.max_count is not None and count >= args.max_count:
             break
+
+    if rows:
+        table = pd.DataFrame(rows, columns=["hash", "author", "message"])
+        print(table.to_string(index=False))
 
 
 if __name__ == "__main__":
