@@ -2,6 +2,10 @@
 
 Minimal scripts that show how to clone and traverse a repository with PyDriller.
 
+## Example scripts
+
+- `commit_overview.py`: Traverse commits in a repository and print the hash, author, and message.
+
 ## Example ideas
 
 1. Traverse commits in a single repository and print the commit hash, author, and message.
