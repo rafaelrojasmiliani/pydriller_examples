@@ -16,6 +16,18 @@ Traverse commits in a repository and print the hash, author, and message.
 python examples/basic/example_01_commit_overview.py /path/to/repo --max-count 10
 ```
 
+### Example 02: Commits in a date range
+
+**Script:** `example_02_commits_by_date.py`
+
+Filter commits by date range (e.g., last 30 days) and list the commit hashes.
+
+**Usage**
+
+```bash
+python examples/basic/example_02_commits_by_date.py /path/to/repo --days 30
+```
+
 ## Example ideas
 
 1. Traverse commits in a single repository and print the commit hash, author, and message.
