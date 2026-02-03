@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Print commit hash, author, and message for a repository."""
 
-from __future__ import annotations
-
 import argparse
 from pathlib import Path
 
