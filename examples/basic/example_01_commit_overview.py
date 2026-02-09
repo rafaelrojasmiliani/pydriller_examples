@@ -9,6 +9,7 @@ from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the commit overview example."""
     parser = argparse.ArgumentParser(
         description="Traverse commits and print hash, author, and message.",
     )
@@ -27,6 +28,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """Run the commit overview example and print a formatted table."""
     args = parse_args()
     count = 0
     rows: list[dict[str, str]] = []

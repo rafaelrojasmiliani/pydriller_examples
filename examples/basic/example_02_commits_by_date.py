@@ -10,6 +10,7 @@ from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the date-range example."""
     parser = argparse.ArgumentParser(
         description="List commit hashes filtered by date range.",
     )
@@ -28,6 +29,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """Run the date-range example and print a formatted table."""
     args = parse_args()
     since = datetime.now(timezone.utc) - timedelta(days=args.days)
     rows: list[dict[str, str]] = []
