@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""List commit hashes in a given date range."""
+"""List commit hashes in a given date range.
+
+This example filters commits by a recent window (default: last 30 days) and
+prints a table of short commit hashes.
+"""
 
 import argparse
 from datetime import datetime, timedelta, timezone
@@ -10,7 +14,11 @@ from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments for the date-range example."""
+    """Parse command-line arguments for the date-range example.
+
+    Returns:
+        Parsed arguments containing the repository location and day window.
+    """
     parser = argparse.ArgumentParser(
         description="List commit hashes filtered by date range.",
     )
@@ -29,7 +37,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
-    """Run the date-range example and print a formatted table."""
+    """Run the date-range example and print a formatted table.
+
+    The date range is computed relative to the current UTC time.
+    """
     args = parse_args()
     since = datetime.now(timezone.utc) - timedelta(days=args.days)
     rows: list[dict[str, str]] = []

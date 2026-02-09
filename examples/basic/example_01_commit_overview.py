@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Print commit hash, author, and message for a repository."""
+"""Print commit hash, author, and message for a repository.
+
+This example traverses a repository's commits and renders a compact table
+with a short hash, the author identity, and the commit message.
+"""
 
 import argparse
 from pathlib import Path
@@ -9,7 +13,12 @@ from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments for the commit overview example."""
+    """Parse command-line arguments for the commit overview example.
+
+    Returns:
+        Parsed arguments containing the repository location and optional
+        max-count limit.
+    """
     parser = argparse.ArgumentParser(
         description="Traverse commits and print hash, author, and message.",
     )
@@ -28,7 +37,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
-    """Run the commit overview example and print a formatted table."""
+    """Run the commit overview example and print a formatted table.
+
+    The output is rendered with pandas to make the commit data easy to scan.
+    """
     args = parse_args()
     count = 0
     rows: list[dict[str, str]] = []
