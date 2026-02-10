@@ -28,7 +28,6 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--author-email",
-        required=True,
         help="Author email address to filter commits by.",
     )
     if len(sys.argv) == 1:
@@ -44,6 +43,19 @@ def main() -> None:
 
     import pandas as pd
     from pydriller import Repository
+
+    # If no author filter is provided, list all discovered authors.
+    if not args.author_email:
+        authors: set[str] = set()
+        for commit in Repository(str(args.repo)).traverse_commits():
+            authors.add(f"{commit.author.name} <{commit.author.email}>")
+
+        rows = [{"author": author} for author in sorted(authors)]
+        if rows:
+            table = pd.DataFrame(rows, columns=["author"])
+            print(table.to_string(index=False))
+        return
+
     rows: list[dict[str, str]] = []
 
     # Traverse the repository and collect commits for the selected author.
