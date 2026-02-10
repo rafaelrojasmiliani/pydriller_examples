@@ -9,8 +9,6 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-import pandas as pd
-from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
@@ -30,7 +28,7 @@ def parse_args() -> argparse.Namespace:
     )
     if len(sys.argv) == 1:
         parser.print_help()
-        parser.exit(2)
+        parser.exit()
 
     return parser.parse_args()
 
@@ -38,6 +36,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Run the file commit map example and print a formatted table."""
     args = parse_args()
+
+    import pandas as pd
+    from pydriller import Repository
     file_to_commits: dict[str, list[str]] = defaultdict(list)
 
     # Traverse commits and add each short hash to the file's history.

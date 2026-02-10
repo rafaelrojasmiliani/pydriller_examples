@@ -9,8 +9,6 @@ import argparse
 import sys
 from pathlib import Path
 
-import pandas as pd
-from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
@@ -35,7 +33,7 @@ def parse_args() -> argparse.Namespace:
     )
     if len(sys.argv) == 1:
         parser.print_help()
-        parser.exit(2)
+        parser.exit()
 
     return parser.parse_args()
 
@@ -43,6 +41,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Run the author filter example and print a formatted table."""
     args = parse_args()
+
+    import pandas as pd
+    from pydriller import Repository
     rows: list[dict[str, str]] = []
 
     # Traverse the repository and collect commits for the selected author.

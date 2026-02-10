@@ -10,8 +10,6 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import pandas as pd
-from pydriller import Repository
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,7 +35,7 @@ def parse_args() -> argparse.Namespace:
     )
     if len(sys.argv) == 1:
         parser.print_help()
-        parser.exit(2)
+        parser.exit()
 
     return parser.parse_args()
 
@@ -48,6 +46,9 @@ def main() -> None:
     The date range is computed relative to the current UTC time.
     """
     args = parse_args()
+
+    import pandas as pd
+    from pydriller import Repository
     # Compute the lower bound for commit dates.
     since = datetime.now(timezone.utc) - timedelta(days=args.days)
     rows: list[dict[str, str]] = []
