@@ -6,6 +6,7 @@ showing the short hash, author identity, and modified file paths.
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -32,6 +33,10 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Author email address to filter commits by.",
     )
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit(2)
+
     return parser.parse_args()
 
 

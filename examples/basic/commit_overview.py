@@ -6,6 +6,7 @@ print key metadata for each one.
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 from pydriller import Repository
@@ -27,6 +28,10 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Limit the number of commits processed.",
     )
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit(2)
+
     return parser.parse_args()
 
 

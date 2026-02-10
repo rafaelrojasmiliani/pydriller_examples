@@ -5,6 +5,7 @@ This example groups commit hashes by file path to show change history per file.
 """
 
 import argparse
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -27,6 +28,10 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         help="Path or URL to the repository to traverse.",
     )
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit(2)
+
     return parser.parse_args()
 
 

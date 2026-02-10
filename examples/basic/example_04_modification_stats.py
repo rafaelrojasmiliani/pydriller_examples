@@ -6,6 +6,7 @@ added/removed line counts for each commit.
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -34,6 +35,10 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Limit the number of commits processed.",
     )
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit(2)
+
     return parser.parse_args()
 
 

@@ -6,6 +6,7 @@ prints a table of short commit hashes.
 """
 
 import argparse
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -34,6 +35,10 @@ def parse_args() -> argparse.Namespace:
         default=30,
         help="Number of days to look back from now.",
     )
+    if len(sys.argv) == 1:
+        parser.print_help()
+        parser.exit(2)
+
     return parser.parse_args()
 
 
