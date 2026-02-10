@@ -19,6 +19,7 @@ def parse_args() -> argparse.Namespace:
         Parsed arguments containing the repository location and optional
         max-count limit.
     """
+    # Configure the CLI and return parsed arguments.
     parser = argparse.ArgumentParser(
         description="Traverse commits and print hash, author, and message.",
     )
@@ -45,7 +46,9 @@ def main() -> None:
     count = 0
     rows: list[dict[str, str]] = []
 
+    # Walk all commits in the repository and collect summary fields.
     for commit in Repository(str(args.repo)).traverse_commits():
+        # Store a short hash to keep the table compact.
         rows.append(
             {
                 "hash": commit.hash[:7],
@@ -55,9 +58,11 @@ def main() -> None:
         )
         count += 1
 
+        # Optional early-exit for fast exploration.
         if args.max_count is not None and count >= args.max_count:
             break
 
+    # Render the collected rows as a table for readable output.
     if rows:
         table = pd.DataFrame(rows, columns=["hash", "author", "message"])
         print(table.to_string(index=False))

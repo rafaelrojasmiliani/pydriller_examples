@@ -18,6 +18,7 @@ def parse_args() -> argparse.Namespace:
     Returns:
         Parsed arguments containing the repository location and author email.
     """
+    # Configure the CLI and return parsed arguments.
     parser = argparse.ArgumentParser(
         description="Filter commits by author email and summarize changes.",
     )

@@ -19,6 +19,7 @@ def parse_args() -> argparse.Namespace:
     Returns:
         Parsed arguments containing the repository location and day window.
     """
+    # Configure the CLI and return parsed arguments.
     parser = argparse.ArgumentParser(
         description="List commit hashes filtered by date range.",
     )
@@ -42,12 +43,16 @@ def main() -> None:
     The date range is computed relative to the current UTC time.
     """
     args = parse_args()
+    # Compute the lower bound for commit dates.
     since = datetime.now(timezone.utc) - timedelta(days=args.days)
     rows: list[dict[str, str]] = []
 
+    # Traverse commits since the calculated date.
     for commit in Repository(str(args.repo), since=since).traverse_commits():
+        # Keep a short hash for compact output.
         rows.append({"hash": commit.hash[:7]})
 
+    # Render the collected hashes as a one-column table.
     if rows:
         table = pd.DataFrame(rows, columns=["hash"])
         print(table.to_string(index=False))
