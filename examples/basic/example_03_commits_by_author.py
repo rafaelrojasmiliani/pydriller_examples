@@ -10,6 +10,25 @@ import sys
 from pathlib import Path
 
 
+def validate_repo_path(repo: Path, parser: argparse.ArgumentParser) -> None:
+    """Validate that repo exists, is a directory, and is a Git repository."""
+    if not repo.exists():
+        parser.error(f"Repository path does not exist: {repo}")
+
+    if not repo.is_dir():
+        parser.error(f"Repository path is not a directory: {repo}")
+
+    import subprocess
+
+    result = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "--is-inside-work-tree"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0 or result.stdout.strip() != "true":
+        parser.error(f"Repository path is not a valid Git repository: {repo}")
+
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments for the author filter example.
@@ -34,7 +53,9 @@ def parse_args() -> argparse.Namespace:
         parser.print_help()
         parser.exit()
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    validate_repo_path(args.repo, parser)
+    return args
 
 
 def main() -> None:
@@ -64,7 +85,8 @@ def main() -> None:
         only_authors=[args.author_email],
     ).traverse_commits():
         # Capture a short hash and a compact list of modified files.
-        file_names = [mod.new_path or mod.old_path or "<deleted>" for mod in commit.modified_files]
+        file_names = [
+            mod.new_path or mod.old_path or "<deleted>" for mod in commit.modified_files]
         rows.append(
             {
                 "hash": commit.hash[:7],
