@@ -55,12 +55,17 @@ def main() -> None:
 
     # Traverse commits since the calculated date.
     for commit in Repository(str(args.repo), since=since).traverse_commits():
-        # Keep a short hash for compact output.
-        rows.append({"hash": commit.hash[:7]})
+        # Keep a short hash and a formatted commit date for compact output.
+        rows.append(
+            {
+                "hash": commit.hash[:7],
+                "date": commit.committer_date.strftime("%Y/%m/%d %H:%M:%S"),
+            }
+        )
 
     # Render the collected hashes as a one-column table.
     if rows:
-        table = pd.DataFrame(rows, columns=["hash"])
+        table = pd.DataFrame(rows, columns=["hash", "date"])
         print(table.to_string(index=False))
 
 
